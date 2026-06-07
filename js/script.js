@@ -14,7 +14,7 @@ $(document).on('click', function(){
     document.getElementById("my_audio").play();
 });
 
-var countDownDate = new Date("May 05, 2026 11:00:00").getTime();
+var countDownDate = new Date("July 04, 2026 07:00:00").getTime();
 
 var x = setInterval(function() {
     var now = new Date().getTime();
@@ -61,7 +61,7 @@ var styles2 = [
     , 'font-size: 32px'
 ].join(';');
 
-console.log('\n\n%c SAVE THE DATE: 5th May, 2026!', styles);
+console.log('\n\n%c SAVE THE DATE: 4th July, 2026!', styles);
 
 console.log('%cYour presence is requested!%c\n\nRegards: Sunil Tiwari', styles1, styles2);
 

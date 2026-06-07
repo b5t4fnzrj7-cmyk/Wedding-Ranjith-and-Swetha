@@ -595,9 +595,12 @@ a {
 }
 
 .actions {
-	display: flex;
-	font-size: 12px;
-	letter-spacing: 0pt;
+    display: flex;
+    flex-wrap: wrap; /* This is the magic line! It forces buttons to stack on small screens */
+    justify-content: center;
+    gap: 15px; /* Adds space between buttons */
+    font-size: 12px;
+    margin: 20px;
 }
 .tile__img {
 	max-width: 65%;

@@ -391,13 +391,36 @@ img {
 }
 
 .dance-med {
-	font-family: 'Dancing Script', cursive;
-	font-weight: bolder;
-	font-style: normal;
-	font-size: 32px;
-	color: #674ea7;
-	margin: 16px;
-	text-align: center;
+    /* To change the font, edit the line below. 
+       Right now it is set to 'Arvo', serif for better readability. 
+       If you want the cursive font back, change it to: 'Dancing Script', cursive; */
+    font-family: 'Arvo', serif; 
+    color: #674ea7;
+    margin: 20px auto;
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.event-details {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.4); /* Adds a soft background block to fix alignment */
+    border-radius: 12px;
+}
+
+.event-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #e25c67; /* Matches your main & title color */
+}
+
+.event-time {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.5;
 }
 
 .title h3 {

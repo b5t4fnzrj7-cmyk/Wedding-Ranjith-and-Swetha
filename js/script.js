@@ -71,36 +71,35 @@ console.log(
 )
 
 // --- Welcome Gate Logic & Email Tracking ---
-const form = document.getElementById('form');
-const submitBtn = form.querySelector('button[type="submit"]');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form');
+    
+    // Safety check to ensure the form exists
+    if (!form) return; 
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    const submitBtn = form.querySelector('button[type="submit"]');
 
-    // Capture the name for our Welcome popup
-    const guestName = document.getElementById("guestName").value;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const formData = new FormData(form);
-    formData.append("access_key", "d6bef30c-04a3-4386-ac6a-d640e06ec961");
-    formData.append("subject", "Wedding Invitation Viewed!"); // Tells you what the email is about
+        // Capture the name for our Welcome popup
+        const guestNameInput = document.getElementById("guestName");
+        const guestName = guestNameInput ? guestNameInput.value : "Guest";
 
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = "Opening...";
-    submitBtn.disabled = true;
+        const formData = new FormData(form);
+        // Using the exact key you provided
+        formData.append("access_key", "d6bef30c-04a3-4386-ac6a-d640e06ec961");
+        formData.append("subject", "Wedding Invitation Viewed!");
 
-    try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "Opening...";
+        submitBtn.disabled = true;
 
-        const data = await response.json();
-
-        if (response.ok) {
-            // --- INVITATION UNLOCK LOGIC ---
-            
+        // Function to unlock the invitation (used whether the email succeeds or fails)
+        const unlockInvitation = () => {
             // 1. Hide the Welcome Gate
-            document.getElementById("welcome-gate").style.display = "none";
+            const gate = document.getElementById("welcome-gate");
+            if (gate) gate.style.display = "none";
 
             // 2. Play the background music automatically
             var audio = document.getElementById("my_audio");
@@ -117,39 +116,29 @@ form.addEventListener('submit', async (e) => {
                     icon: "./assets/img/welcome.jpg",
                 });
             }
+        };
 
-        } else {
-            alert("Error: " + data.message);
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Email sent successfully! Unlock the invite.
+                unlockInvitation();
+            } else {
+                // API had an issue, but we STILL want to let the guest in!
+                console.log("Form error: " + data.message);
+                unlockInvitation();
+            }
+
+        } catch (error) {
+            // Network error (Adblocker, Safari Privacy, etc) - STILL let the guest in!
+            console.log("Email tracking was blocked by the browser, but unlocking invitation anyway.");
+            unlockInvitation();
         }
-
-    } catch (error) {
-        alert("Something went wrong. Please check your connection and try again.");
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-});
-
-    // 4. Send the name to your email silently in the background
-    fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify({
-            access_key: "d6bef30c-04a3-4386-ac6a-d640e06ec961", // <-- DO NOT FORGET TO PUT YOUR KEY BACK HERE
-            subject: "Wedding Invitation Viewed!",
-            from_name: "Wedding Website",
-            message: guestName + " has just opened and viewed your wedding invitation!"
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Tracking sent.");
-    })
-    .catch(error => {
-        console.log("Tracking failed.", error);
     });
-}
+});

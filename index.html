@@ -15,17 +15,21 @@
 </head>
 
 <body>
-	<!-- Welcome Gate Screen -->
-	<div id="welcome-gate" class="gate-container">
-	    <div class="gate-box">
-	        <h2 style="font-family: 'Dancing Script', cursive; color: #874562; font-size: 35px; margin-bottom: 10px;">Welcome!</h2>
-	        <p style="color: #564861; margin-bottom: 20px;">Please enter your name to open Ranjith & Swetha's Wedding Invitation.</p>
-	        <input type="text" id="guestName" placeholder="Enter your full name" required>
-	        <button onclick="enterInvitation()">Open Invitation</button>
-	    </div>
-	</div>
-	<div class="sakura-falling"></div>
-	<img src="./assets/img/image-top-right.png" alt="image-top-right" class="top-right-decoration">
+    <!-- Welcome Gate Screen -->
+    <div id="welcome-gate" class="gate-container">
+        <div class="gate-box">
+            <h2 style="font-family: 'Dancing Script', cursive; color: #874562; font-size: 35px; margin-bottom: 10px;">Welcome!</h2>
+            <p style="color: #564861; margin-bottom: 20px;">Please enter your name to open Ranjith & Swetha's Wedding Invitation.</p>
+            
+            <form id="form">
+                <input type="text" id="guestName" name="Guest Name" placeholder="Enter your full name" required>
+                <button type="submit">Open Invitation</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="sakura-falling"></div>
+    <img src="./assets/img/image-top-right.png" alt="image-top-right" class="top-right-decoration">
 	<img src="./assets/img/image-top-left.png" alt="image-top-left" class="top-left-decoration">
 	<section id="media"></section>
 	<div class="wrap">
@@ -83,18 +87,3 @@
 	<script src="./js/script.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<!-- Welcome Gate Screen -->
-<div id="welcome-gate" class="gate-container">
-    <div class="gate-box">
-        <h2 style="font-family: 'Dancing Script', cursive; color: #874562; font-size: 35px; margin-bottom: 10px;">Welcome!</h2>
-        <p style="color: #564861; margin-bottom: 20px;">Please enter your name to open Ranjith & Swetha's Wedding Invitation.</p>
-        
-        <!-- Updated form tag and input tag -->
-        <form id="form">
-            <input type="text" id="guestName" name="Guest Name" placeholder="Enter your full name" required>
-            <button type="submit">Open Invitation</button>
-        </form>
-    </div>
-</div>	
-</body>
-</html>

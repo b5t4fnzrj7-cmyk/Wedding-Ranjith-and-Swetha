@@ -381,14 +381,17 @@ img {
 }
 
 .title h2 {
-	font-family: 'Dancing Script', cursive;
-	font-weight: bold;
-	font-style: normal;
-	margin: 0;
-	padding: 0;
-	font-size: 24px;
-	color: #e25c67;
-	line-height: 1;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    font-style: normal;
+    /* This is the magic line! 
+       20px pushes it down from Ranjith, 5px keeps it close to Swetha */
+    margin: 20px 0 5px 0; 
+    
+    padding: 0;
+    font-size: 30px; /* I slightly increased the size so it stands out better */
+    color: #e25c67;
+    line-height: 1;
 }
 
 .dance-med {

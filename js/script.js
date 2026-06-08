@@ -1,19 +1,23 @@
 (function ($) {
     "use strict";
-      $('.sakura-falling').sakura('start', {
+    $('.sakura-falling').sakura('start', {
         className: 'sakura',
         fallSpeed: 2.5,
         maxSize: 30,
         minSize: 9,
         newOn: 100,
-        
     });
 })(jQuery);
 
+// Music failsafe for mobile
 $(document).on('click', function(){
-    document.getElementById("my_audio").play();
+    var audio = document.getElementById("my_audio");
+    if(audio && audio.paused) {
+        audio.play().catch(function(e){});
+    }
 });
 
+// Countdown Timer
 var countDownDate = new Date("July 04, 2026 07:00:00").getTime();
 
 var x = setInterval(function() {
@@ -23,71 +27,34 @@ var x = setInterval(function() {
     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("time").innerHTML = "<div class='container'><div class='days block'>"+ days + "<br>Days</div>" + "<div class='hours block'>" + hours + "<br>Hours</div>" + "<div class='minutes block'>" + minutes + "<br>Minutes</div>" + "<div class='seconds block'>" + seconds + "<br>Seconds</div></div>";
-    if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("time").innerHTML = "Bless the married couple for happy life!";
+    
+    var timeDiv = document.getElementById("time");
+    if(timeDiv) {
+        timeDiv.innerHTML = "<div class='container'><div class='days block'>"+ days + "<br>Days</div>" + "<div class='hours block'>" + hours + "<br>Hours</div>" + "<div class='minutes block'>" + minutes + "<br>Minutes</div>" + "<div class='seconds block'>" + seconds + "<br>Seconds</div></div>";
+        if (distance < 0) {
+            clearInterval(x);
+            timeDiv.innerHTML = "Bless the married couple for happy life!";
+        }
     }
 }, 1000);
-
-var styles = [
-    'background: linear-gradient(#D33106, #571402)'
-    , 'border: 4px solid #3E0E02'
-    , 'color: white'
-    , 'display: block'
-    , 'text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3)'
-    , 'box-shadow: 0 2px 0 rgba(255, 255, 255, 0.4) inset, 0 5px 3px -5px rgba(0, 0, 0, 0.5), 0 -13px 5px -10px rgba(255, 255, 255, 0.4) inset'
-    , 'line-height: 40px'
-    , 'text-align: center'
-    , 'font-weight: bold'
-    , 'font-size: 32px'
-].join(';');
-
-var styles1 = [
-    'color: #FF6C37'
-    , 'display: block'
-    , 'text-shadow: 0 2px 0 rgba(0, 0, 0, 1)'
-    , 'line-height: 40px'
-    , 'font-weight: bold'
-    , 'font-size: 32px'
-].join(';');
-
-var styles2 = [
-    'color: teal'
-    , 'display: block'
-    , 'text-shadow: 0 2px 0 rgba(0, 0, 0, 1)'
-    , 'line-height: 40px'
-    , 'font-weight: bold'
-    , 'font-size: 32px'
-].join(';');
-
-console.log('\n\n%c SAVE THE DATE: 4th July, 2026!', styles);
-
-console.log('%cYour presence is requested!%c\n\nRegards: Ranjith Chalicheemala', styles1, styles2);
-
-console.log(
-    `%c come to the wedding!\n\n`,
-    'color: yellow; background:tomato; font-size: 24pt; font-weight: bold',
-)
 
 // --- Welcome Gate Logic & Email Tracking ---
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('form');
     
-    // Safety check to ensure the form exists
+    // Safety check
     if (!form) return; 
 
     const submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Stop page from refreshing
 
-        // Capture the name for our Welcome popup
+        // Capture the name
         const guestNameInput = document.getElementById("guestName");
         const guestName = guestNameInput ? guestNameInput.value : "Guest";
 
         const formData = new FormData(form);
-        // Using the exact key you provided
         formData.append("access_key", "d6bef30c-04a3-4386-ac6a-d640e06ec961");
         formData.append("subject", "Wedding Invitation Viewed!");
 
@@ -95,13 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.textContent = "Opening...";
         submitBtn.disabled = true;
 
-        // Function to unlock the invitation (used whether the email succeeds or fails)
+        // Function to unlock the invitation 
         const unlockInvitation = () => {
-            // 1. Hide the Welcome Gate
             const gate = document.getElementById("welcome-gate");
             if (gate) gate.style.display = "none";
 
-            // 2. Play the background music automatically
             var audio = document.getElementById("my_audio");
             if(audio) {
                 audio.play().catch(function(error) {
@@ -109,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // 3. Trigger the personalized Welcome Popup
             if (typeof swal === "function") {
                 swal("Welcome " + guestName + "!", "Chalicheemala Family warmly welcomes you to the celebration!", "success", {
                     button: "Enter",
@@ -118,26 +82,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
+        // Send Email + Unlock Gate
         try {
             const response = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
                 body: formData
             });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Email sent successfully! Unlock the invite.
-                unlockInvitation();
-            } else {
-                // API had an issue, but we STILL want to let the guest in!
-                console.log("Form error: " + data.message);
-                unlockInvitation();
-            }
+            
+            // Unlocks the gate!
+            unlockInvitation(); 
 
         } catch (error) {
-            // Network error (Adblocker, Safari Privacy, etc) - STILL let the guest in!
-            console.log("Email tracking was blocked by the browser, but unlocking invitation anyway.");
+            // Unlocks the gate even if ad-blocker stops the email!
             unlockInvitation();
         }
     });

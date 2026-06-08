@@ -700,7 +700,12 @@ a {
     margin: 15px 0 25px 0;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 16px;
+    
+    /* Safari Anti-Zoom Rules */
+    font-size: 16px !important; 
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+    
     font-family: 'Arvo', serif;
 }
 

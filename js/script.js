@@ -69,39 +69,56 @@ console.log(
     `%cShaadi me zaroor aana!\n\n`,
     'color: yellow; background:tomato; font-size: 24pt; font-weight: bold',
 )
-const form = document.getElementById('form');
-const submitBtn = form.querySelector('button[type="submit"]');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    formData.append("access_key", "d6bef30c-04a3-4386-ac6a-d640e06ec961");
-
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = "Sending...";
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("Success! Your message has been sent.");
-            form.reset();
-        } else {
-            alert("Error: " + data.message);
-        }
-
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+// --- Welcome Gate Logic & Email Tracking ---
+function enterInvitation() {
+    var guestName = document.getElementById("guestName").value;
+    
+    // Check if they typed something
+    if(guestName.trim() === "") {
+        alert("Please enter your name to continue!");
+        return;
     }
-});
+
+    // 1. Hide the Welcome Gate
+    document.getElementById("welcome-gate").style.display = "none";
+
+    // 2. Play the background music automatically
+    var audio = document.getElementById("my_audio");
+    if(audio) {
+        audio.play().catch(function(error) {
+            console.log("Audio play prevented by browser.");
+        });
+    }
+
+    // 3. Trigger the personalized Welcome Popup
+    if (typeof swal === "function") {
+        swal("Welcome " + guestName + "!", "Chalicheemala Family warmly welcomes you to the celebration!", "success", {
+            button: "Enter",
+            // Make sure you have a welcome.jpg in this folder, or remove the icon line
+            icon: "./assets/img/welcome.jpg", 
+        });
+    }
+
+    // 4. Send the name to your email silently in the background
+    fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify({
+            access_key: "d6bef30c-04a3-4386-ac6a-d640e06ec961", // <-- DO NOT FORGET TO PUT YOUR KEY BACK HERE
+            subject: "Wedding Invitation Viewed!",
+            from_name: "Wedding Website",
+            message: guestName + " has just opened and viewed your wedding invitation!"
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Tracking sent.");
+    })
+    .catch(error => {
+        console.log("Tracking failed.", error);
+    });
+}

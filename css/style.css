@@ -341,6 +341,11 @@
 	position: absolute
 }
 
+/* Add 'html' here and use overflow-x to kill the bottom scrollbar */
+html, body {
+    overflow-x: hidden; 
+}
+
 body {
     font-family: Arial, Helvetica, Sans-serif;
     display: flex;
@@ -348,9 +353,6 @@ body {
     align-items: center;
     flex-direction: column;
     background-color: #E3DCCD;
-    
-    /* We purposely leave OUT 'height: 100vh' and 'overflow: hidden' 
-       so that mobile users can scroll down to read everything! */
 }
 
 img {

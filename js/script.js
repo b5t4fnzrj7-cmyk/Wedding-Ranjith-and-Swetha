@@ -63,42 +63,73 @@ var styles2 = [
 
 console.log('\n\n%c SAVE THE DATE: 4th July, 2026!', styles);
 
-console.log('%cYour presence is requested!%c\n\nRegards: Sunil Tiwari', styles1, styles2);
+console.log('%cYour presence is requested!%c\n\nRegards: Ranjith Chalicheemala', styles1, styles2);
 
 console.log(
-    `%cShaadi me zaroor aana!\n\n`,
+    `%c come to the wedding!\n\n`,
     'color: yellow; background:tomato; font-size: 24pt; font-weight: bold',
 )
 
 // --- Welcome Gate Logic & Email Tracking ---
-function enterInvitation() {
-    var guestName = document.getElementById("guestName").value;
-    
-    // Check if they typed something
-    if(guestName.trim() === "") {
-        alert("Please enter your name to continue!");
-        return;
-    }
+const form = document.getElementById('form');
+const submitBtn = form.querySelector('button[type="submit"]');
 
-    // 1. Hide the Welcome Gate
-    document.getElementById("welcome-gate").style.display = "none";
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    // 2. Play the background music automatically
-    var audio = document.getElementById("my_audio");
-    if(audio) {
-        audio.play().catch(function(error) {
-            console.log("Audio play prevented by browser.");
+    // Capture the name for our Welcome popup
+    const guestName = document.getElementById("guestName").value;
+
+    const formData = new FormData(form);
+    formData.append("access_key", "d6bef30c-04a3-4386-ac6a-d640e06ec961");
+    formData.append("subject", "Wedding Invitation Viewed!"); // Tells you what the email is about
+
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Opening...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
         });
-    }
 
-    // 3. Trigger the personalized Welcome Popup
-    if (typeof swal === "function") {
-        swal("Welcome " + guestName + "!", "Chalicheemala Family warmly welcomes you to the celebration!", "success", {
-            button: "Enter",
-            // Make sure you have a welcome.jpg in this folder, or remove the icon line
-            icon: "./assets/img/welcome.jpg", 
-        });
+        const data = await response.json();
+
+        if (response.ok) {
+            // --- INVITATION UNLOCK LOGIC ---
+            
+            // 1. Hide the Welcome Gate
+            document.getElementById("welcome-gate").style.display = "none";
+
+            // 2. Play the background music automatically
+            var audio = document.getElementById("my_audio");
+            if(audio) {
+                audio.play().catch(function(error) {
+                    console.log("Audio play prevented by browser.");
+                });
+            }
+
+            // 3. Trigger the personalized Welcome Popup
+            if (typeof swal === "function") {
+                swal("Welcome " + guestName + "!", "Chalicheemala Family warmly welcomes you to the celebration!", "success", {
+                    button: "Enter",
+                    icon: "./assets/img/welcome.jpg",
+                });
+            }
+
+        } else {
+            alert("Error: " + data.message);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+
+    } catch (error) {
+        alert("Something went wrong. Please check your connection and try again.");
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
     }
+});
 
     // 4. Send the name to your email silently in the background
     fetch("https://api.web3forms.com/submit", {

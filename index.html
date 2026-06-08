@@ -89,14 +89,12 @@
         <h2 style="font-family: 'Dancing Script', cursive; color: #874562; font-size: 35px; margin-bottom: 10px;">Welcome!</h2>
         <p style="color: #564861; margin-bottom: 20px;">Please enter your name to open Ranjith & Swetha's Wedding Invitation.</p>
         
-        <!-- Wrapped in a form so the mobile keyboard "Go" button works -->
-        <form onsubmit="event.preventDefault(); enterInvitation();">
-            <input type="text" id="guestName" placeholder="Enter your full name" required>
+        <!-- Updated form tag and input tag -->
+        <form id="form">
+            <input type="text" id="guestName" name="Guest Name" placeholder="Enter your full name" required>
             <button type="submit">Open Invitation</button>
         </form>
     </div>
-</div>
-	
+</div>	
 </body>
-
 </html>

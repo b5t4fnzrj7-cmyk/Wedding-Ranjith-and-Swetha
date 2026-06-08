@@ -342,7 +342,15 @@
 }
 
 body {
-	font-family: Arial, Helvetica, Sans-serif;
+    font-family: Arial, Helvetica, Sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #E3DCCD;
+    
+    /* We purposely leave OUT 'height: 100vh' and 'overflow: hidden' 
+       so that mobile users can scroll down to read everything! */
 }
 
 img {

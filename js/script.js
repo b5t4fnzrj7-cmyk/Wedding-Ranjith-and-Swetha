@@ -10,10 +10,16 @@
 })(jQuery);
 
 // Music failsafe for mobile
-$(document).on('click', function(){
+// --- 60 Second Music Limit ---
+document.addEventListener('DOMContentLoaded', function() {
     var audio = document.getElementById("my_audio");
-    if(audio && audio.paused) {
-        audio.play().catch(function(e){});
+    if (audio) {
+        audio.addEventListener('timeupdate', function() {
+            // Checks if the song has reached 60 seconds
+            if (audio.currentTime >= 60) {
+                audio.pause(); // Stops the music
+            }
+        });
     }
 });
 

@@ -438,10 +438,16 @@ img {
 
 .title p {
     color: #564861;
-    margin: 60px 0 0px 0; /* 60px pushes it below the flowers, 0px pulls it tight to the names */
     text-transform: uppercase;
     letter-spacing: 3px;
     font-size: 16px;
+    margin: 20px 0; 
+}
+
+/* 2. NEW: This targets ONLY "Sri Ganeshaya Namaha" to push it below the flowers */
+.title p:first-child {
+    margin-top: 140px; /* Pushes the text safely below the watercolor flowers */
+    margin-bottom: 0px; /* Keeps it perfectly tight against Ranjith's name */
 }
 
 .wrap {

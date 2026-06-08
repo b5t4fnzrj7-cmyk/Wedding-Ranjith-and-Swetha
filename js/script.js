@@ -17,7 +17,7 @@ $(document).on('click', function(){
     }
 });
 
-// --- NEW ELEGANT COUNTDOWN TIMER ---
+// Countdown Timer
 var countDownDate = new Date("July 04, 2026 07:00:00").getTime();
 
 var x = setInterval(function() {
@@ -28,26 +28,12 @@ var x = setInterval(function() {
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
-    // Formatting numbers to always have two digits (e.g., 01 instead of 1)
-    var d = days < 10 ? "0" + days : days;
-    var h = hours < 10 ? "0" + hours : hours;
-    var m = minutes < 10 ? "0" + minutes : minutes;
-    var s = seconds < 10 ? "0" + seconds : seconds;
-    
     var timeDiv = document.getElementById("time");
     if(timeDiv) {
-        timeDiv.innerHTML = `
-            <h3>Counting Down To The Big Day</h3>
-            <div class='countdown-wrapper'>
-                <div class='time-box'><span class='num'>${d}</span><span class='label'>Days</span></div>
-                <div class='time-box'><span class='num'>${h}</span><span class='label'>Hours</span></div>
-                <div class='time-box'><span class='num'>${m}</span><span class='label'>Mins</span></div>
-                <div class='time-box'><span class='num'>${s}</span><span class='label'>Secs</span></div>
-            </div>
-        `;
+        timeDiv.innerHTML = "<div class='container'><div class='days block'>"+ days + "<br>Days</div>" + "<div class='hours block'>" + hours + "<br>Hours</div>" + "<div class='minutes block'>" + minutes + "<br>Minutes</div>" + "<div class='seconds block'>" + seconds + "<br>Seconds</div></div>";
         if (distance < 0) {
             clearInterval(x);
-            timeDiv.innerHTML = "<h3 style='color: white;'>Bless the married couple for a happy life!</h3>";
+            timeDiv.innerHTML = "Bless the married couple for happy life!";
         }
     }
 }, 1000);
